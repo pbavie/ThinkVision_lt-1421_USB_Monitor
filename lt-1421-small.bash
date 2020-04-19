@@ -29,8 +29,14 @@
     exit 1
   fi
 
+  #Eseguo
   LIBGL_ALWAYS_SOFTWARE=1
   xrandr --newmode "1368x768_59.90"  85.72  1368 1440 1584 1800  768 769 772 795  -HSync +Vsync &> /dev/null
   xrandr --addmode $DVIN 1368x768_59.90 &> /dev/null
   xrandr --output $DVIN --off &> /dev/null
   xrandr --output $DVIN --mode "1368x768_59.90" --right-of $PRINC &> /dev/null
+	# xrandr --output $DVIN --mode "1368x768_59.90" --left-of $PRINC &> /dev/null
+	# xrandr --output $DVIN --mode "1368x768_59.90" --above $PRINC &> /dev/null
+	# xrandr --output $DVIN --mode "1368x768_59.90" --below $PRINC &> /dev/null
+  # --same-as puo dare problemi, servono configurazioni aggiuntive
+	# xrandr --output $DVIN --primary --mode "1368x768_59.90" --same-as $PRINC &> /dev/null
