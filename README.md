@@ -3,9 +3,25 @@ Script in bash per l'attivazione del monitor ThinkVision lt-1421, non necessita 
 
 Necessita la presenza di xrandr per l'impostazione dello schermo e zenity per la piccola GUI, altri comandi dovrebbero essere gia' presenti di default.
 
-Lo script individua il monitor principale e avvia il monitor lt-1421 alla sua sinistra o destra a seconda della scelta dell'utente. 
+Lo script individua il monitor principale e avvia il monitor lt-1421 nella posizione scelta dell'utente.
 
-Le tre versioni presenti svolgono lo stesso compito
+Versione ThinkVision
+Versione funzionante ma con poche feature
+
+Versione GUI
+Script completo,usabile sia da terminale che con una semplice GUI realizata con zenity. Gestisce tutte le posizioni possibili compreso il clone dello schermo.
+
+Parametri possibili:
+	-nessuno-		GUI con zenity
+	dx|r [default]		DESTRA del princpale
+	sx|l		SINISTRA del princpale
+	up		SOPRA del princpale
+	down		SOTTO del princpale
+	same|clone	CLONA i due Schermi
+	off		Spegne lo Schermo lt-1421
+
+Versione Small
+Tutto il necessario per essere usato nelle automazioni
 
 # Usage:
 $ chmod +x script.bash
