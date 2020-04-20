@@ -131,7 +131,7 @@ function individua_Schermo(){
 
 # Imposto risoluzione e caratteristiche del Schermo e lo attivo nella posizione desiderata o lo spengo
 function init_Schermo() {
-	LIBGL_ALWAYS_SOFTWARE=1
+	# LIBGL_ALWAYS_SOFTWARE=1
 
 	if [ $SELEZ == "off" ];then
 		spengni_Schermo
