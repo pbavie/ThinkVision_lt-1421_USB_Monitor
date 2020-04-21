@@ -32,7 +32,7 @@
 # Help e descrizione
 function usage(){
 	echo -e "
-	  ====================== USO DI ${0} ========================
+	====================== USO DI ${0} ========================
 
 	Script per l'attivazione dello Schermo ThinkVision lt-1421
 	Lo script puo essere eseguito con i permessi utente.
@@ -65,8 +65,7 @@ function scrivi_shell_GUI(){
 		zenity --error --width=400 --height=200 --text "$1"
 	fi
 }
-
-# In caso di problemi con l'identificazione dello schermo primario
+# Trovo gli indicatori dei due Schermi, il principale (riferimento) e l'lt-1421
 function individua_Schermo_conflict(){
 	SCHERMI_CONN=(`xrandr | grep " connected" | awk '{print $1}'`)
 	echo "Trovati ${#SCHERMI_CONN[*]} schermi connessi:"
@@ -84,52 +83,31 @@ function individua_Schermo_conflict(){
 				echo "Schermo principale trovato - $PRINC"
 			else	# Ne assegno uno a caso tra quelli attivi.
 				if [ "${SCHERMI_CONN[(($i-1))]}" ]; then	# precedente
-					echo "Imposto come principale  ${SCHERMI_CONN[(($i-1))]}"
-					PRINC=${SCHERMI_CONN[(($i-1))]}
-				elif [ "${SCHERMI_CONN[(($i+1))]}" ]; then	# sucessivo
-					echo "Imposto come principale  ${SCHERMI_CONN[(($i+1))]}"
-					PRINC=${SCHERMI_CONN[(($i+1))]}
-				else	# nessuno schermo, problemi :)
-					scrivi_shell_GUI "${SCHERMI_CONN[$i]} sembra essere l'unico schermo connesso... qualquadra non cosa"
-					exit 1
-				fi
-				# Avviso dell'accaduto
-				if [ "$GUI" == "on" ]; then
-					zenity --warning --width=400 --height=200 --text "ATTENZIONE - Sembra che nessuno schermo fosse impostato come principale.\nQuesto puo' succedere se la configurazione precedente era di CLONARE lo schermo.\n\nPer ovviare a questo problema lo schermo\n		ThinkVision (lt-1421) -> $DVIN\nverra' posizionato usando come riferimento lo schermo\n		\"principale\" -> $PRINC\n"
-				fi
-			fi
+				echo "Imposto come principale  ${SCHERMI_CONN[(($i-1))]}"
+				PRINC=${SCHERMI_CONN[(($i-1))]}
+			elif [ "${SCHERMI_CONN[(($i+1))]}" ]; then	# sucessivo
+			echo "Imposto come principale  ${SCHERMI_CONN[(($i+1))]}"
+			PRINC=${SCHERMI_CONN[(($i+1))]}
+		else	# nessuno schermo, problemi :)
+			scrivi_shell_GUI "${SCHERMI_CONN[$i]} sembra essere l'unico schermo connesso... qualquadra non cosa"
+			exit 1
 		fi
-		let i=i+1
-	done
-
+		# Avviso dell'accaduto
+		if [ "$GUI" == "on" ]; then
+			zenity --warning --width=400 --height=200 --text "ATTENZIONE - Sembra che nessuno schermo fosse impostato come principale.\nQuesto puo' succedere se la configurazione precedente era di CLONARE lo schermo.\n\nPer ovviare a questo problema lo schermo\n		ThinkVision (lt-1421) -> $DVIN\nverra' posizionato usando come riferimento lo schermo\n		\"principale\" -> $PRINC\n"
+		fi
+	fi
+fi
+let i=i+1
+done
+#Se non trova lo schermo lt-1421 avvisa ed esce
+if [ -z "$DVIN" ]; then
+	scrivi_shell_GUI "Lo schermo ThinkVision lt-1421 NON e' stato rilevato nel sistema\n\nControllare il cavo di collegamento e riprovare"
+	exit
+fi
 }
 
-# Trovo gli indicatori dei due Schermi, il principale (riferimento) e l'lt-1421
-function individua_Schermo(){
-	# Individuo lo Schermo Principale
-	PRINC=`xrandr | grep primary | awk '{print $1}'`
-	if [ "$PRINC" ];  then
-		echo "Schermo principale trovato - $PRINC"
-	else
-		individua_Schermo_conflict
-	fi
-
-	# Individuo lo Schermo ThinkVision
-	DVIN=`xrandr | grep DVI* | cut -f1 -d' '`
-	if [ "$DVIN" ];  then
-		echo "Schermo lt-1421 trovato - $DVIN"
-	else
-		individua_Schermo_conflict
-	fi
-
-	# Se sono lo stesso monitor manca il riferimento
-	if [ "$PRINC" == "$DVIN" ]; then
-		echo "Sono lo stesso monitor, non va' bene."
-		individua_Schermo_conflict
-	fi
-}
-
-# Imposto risoluzione e caratteristiche del Schermo e lo attivo nella posizione desiderata o lo spengo
+# Imposto risoluzione e caratteristiche dello Schermo e lo attivo nella posizione desiderata o lo spengo
 function init_Schermo() {
 	# LIBGL_ALWAYS_SOFTWARE=1
 
@@ -169,7 +147,7 @@ function spengni_Schermo() {
 }
 
 ##-------------MAIN----------
-# Se non presenti parametri avvio GUI
+# Se non presenti parametri avvio la GUI
 if [ $# -lt 1 ]; then
 	GUI="on"
 	individua_Schermo_conflict
@@ -178,8 +156,7 @@ if [ $# -lt 1 ]; then
 	if [ -z "$SELEZ" ]; then
 		exit
 	fi
-	# presenza parametro, utente al terminale
-else
+else # presenza parametro, utente al terminale
 	GUI="off"
 	SELEZ="$1"
 fi
@@ -220,7 +197,7 @@ esac
 
 # Se varabili impostate nella GUI salto altrimenti ricavo
 if [ -z $DVIN ] || [ -z $PRINC ]; then
-individua_Schermo_conflict
+	individua_Schermo_conflict
 fi
 
 # ESEGUO - imposto Schermo

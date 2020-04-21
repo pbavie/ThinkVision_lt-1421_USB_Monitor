@@ -1,4 +1,18 @@
 #!/bin/bash
+#  _____ _     _       _   __     ___     _
+# |_   _| |__ (_)_ __ | | _\ \   / (_)___(_) ___  _ __
+#   | | | '_ \| | '_ \| |/ /\ \ / /| / __| |/ _ \| '_ \
+#   | | | | | | | | | |   <  \ V / | \__ \ | (_) | | | |
+#   |_| |_| |_|_|_| |_|_|\_\  \_/  |_|___/_|\___/|_| |_|
+#
+#  _   _____     _ _  _  ____  _
+# | | |_   _|   / | || ||___ \/ |				Script in bash che permette l'uso
+# | |   | |_____| | || |_ __) | | 			dello Schermo USB su sistemi linux.
+# | |___| |_____| |__   _/ __/| |				Testato solamente su Ubuntu.
+# |_____|_|     |_|  |_||_____|_|				VERSIONE SMALL e SILENZIOSA :)
+#                                       Adatta ad essere usata con altri
+#                                       programmi (tipo udev)
+#
 ##############################################################################
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
