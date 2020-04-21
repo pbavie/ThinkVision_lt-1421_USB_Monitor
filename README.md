@@ -1,17 +1,17 @@
 # ThinkVision_lt-1421_USB_Monitor
 Script in bash per l'attivazione del monitor ThinkVision lt-1421, non necessita di particolari permessi e puo essere quindi eseguito come utente comune.
 
-Necessita la presenza di xrandr per l'impostazione dello schermo e zenity per la piccola GUI, altri comandi necessari dovrebbero essere gia' presenti di default nelle classiche distribuzoni linux.
+Per funzionare serve -xrandr- per l'impostazione dello schermo e -zenity- per la piccola GUI.
 
-Lo script individua il monitor principale (o comunque un altro monitor) e avvia il monitor lt-1421 nella posizione scelta dell'utente.
+Lo script individua il monitor principale (o comunque un altro monitor collegato) e avvia il ThinkVision lt-1421 nella posizione scelta dell'utente.
 
 Versione ThinkVision (OLD - Sostituita da versione con GUI)
 Versione funzionante ma con poche feature
 
-#Versione GUI
-Script completo,usabile sia da terminale che con una semplice GUI realizata con zenity. Gestisce tutte le posizioni possibili compreso il clone dello schermo.
+# Versione GUI
+Script completo,usabile sia da terminale che con una semplice GUI realizzata con zenity. Gestisce tutte le posizioni possibili compreso il clone dello schermo.
 
-Parametri possibili:
+Possibili parametri da terminale (Versione GUI):
 	-nessuno-		GUI con zenity
 	dx|r [default]		DESTRA del princpale
 	sx|l		SINISTRA del princpale
@@ -22,12 +22,12 @@ Parametri possibili:
 
 
 # Versione Small
-Solo il necessario per l'individuazione del monitor e la sua attivazione in una posizione. Tutto il necessario quindi per essere usato nelle automazioni.
+Solo il necessario per l'individuazione del monitor e la sua attivazione in una posizione predefinita (default a DX). Tutto il necessario quindi per essere usato nelle automazioni.
 
 
 # 10-ThinkVision_lt-1421.conf
 Allego una versione di un file .conf per - /etc/X11/xorg.conf.d/ -
-per la individuazione automatica dello schermo da parte del sistema.
+per la individuazione automatica dello schermo da parte del sistema al boot, non conosco X11 ma a volte funziona :).
 
 # Usage:
 $ chmod +x script.bash
