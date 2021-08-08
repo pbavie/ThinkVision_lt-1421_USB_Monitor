@@ -13,8 +13,11 @@ Script completo,usabile sia da terminale che con una semplice GUI realizzata con
 
 Possibili parametri da terminale (Versione GUI):
 	-nessuno-		GUI con zenity
+
 	dx|r [default]		DESTRA del princpale
+	dxr|rr	VERTICALE a DESTRA
 	sx|l		SINISTRA del princpale
+	sxr|lr VERTICALE a SINISTRA
 	up		SOPRA del princpale
 	down		SOTTO del princpale
 	same|clone	CLONA i due Schermi
