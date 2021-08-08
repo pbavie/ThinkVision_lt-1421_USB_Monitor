@@ -47,7 +47,9 @@ function usage(){
 	Parametri:
 	-nessuno-		GUI con zenity
 	dx|r [default]		DESTRA del princpale
+	dxr|rr	VERTICALE a DESTRA
 	sx|l		SINISTRA del princpale
+	sxr|lr VERTICALE a SINISTRA
 	up		SOPRA del princpale
 	down		SOTTO del princpale
 	same|clone	CLONA i due Schermi
@@ -121,19 +123,25 @@ function init_Schermo() {
 	xrandr --output $DVIN --off &> /dev/null
 
 	if [ $SELEZ == sx ]; then
-		echo "Provo ad avviare il Schermo a SINSTRA del principale"
+		echo "Provo ad avviare lo Schermo a SINSTRA del principale"
 		xrandr --output $DVIN --mode "1368x768_59.90" --left-of $PRINC &> /dev/null
+	elif [ $SELEZ == vert_sx ]; then
+		echo "Provo ad avviare lo Schermo a SINISTRA del principale in VERTICALE"
+		xrandr --output $DVIN --mode "1368x768_59.90" --left-of $PRINC --rotate left &> /dev/null
 	elif [ $SELEZ == dx ]; then
-		echo "Provo ad avviare il Schermo a DESTRA del principale"
+		echo "Provo ad avviare lo Schermo a DESTRA del principale"
 		xrandr --output $DVIN --mode "1368x768_59.90" --right-of $PRINC &> /dev/null
+	elif [ $SELEZ == vert_dx ]; then
+		echo "Provo ad avviare lo Schermo a DESTRA del principale in VERTICALE"
+		xrandr --output $DVIN --mode "1368x768_59.90" --right-of $PRINC --rotate left &> /dev/null
 	elif [ $SELEZ == up ]; then
-		echo "Provo ad avviare il Schermo a SOPRA il principale"
+		echo "Provo ad avviare lo Schermo a SOPRA il principale"
 		xrandr --output $DVIN --mode "1368x768_59.90" --above $PRINC &> /dev/null
 	elif [ $SELEZ == down ]; then
-		echo "Provo ad avviare il Schermo a SOTTO il principale"
+		echo "Provo ad avviare lo Schermo a SOTTO il principale"
 		xrandr --output $DVIN --mode "1368x768_59.90" --below $PRINC &> /dev/null
 	elif [ $SELEZ == same ]; then
-		echo "Provo ad avviare il Schermo CLONANDO il principale"
+		echo "Provo ad avviare lo Schermo CLONANDO il principale"
 		xrandr --output $DVIN --primary --mode "1368x768_59.90" --same-as $PRINC &> /dev/null
 	fi
 
@@ -151,7 +159,7 @@ function spengni_Schermo() {
 if [ $# -lt 1 ]; then
 	GUI="on"
 	individua_Schermo_conflict
-	SELEZ=`zenity --title="$0" --width=400 --height=350 --text="<big><b>ATTIVAZIONE THINKVSION LT-1421</b></big>\nSchermo principale individuato:  $PRINC\nSchermo Thinkvision individuato:  $DVIN\n\nDove lo vorresti posizionare?" --list --column "VLF" --column "Lato" TRUE "Destra" FALSE "Sinistra" FALSE "Sopra" FALSE "Sotto" FALSE "Schermi Uguali" FALSE "Spegni lt-1421" --radiolist 2>/dev/null`
+	SELEZ=`zenity --title="$0" --width=400 --height=415 --text="<big><b>ATTIVAZIONE THINKVSION LT-1421</b></big>\nSchermo principale individuato:  $PRINC\nSchermo Thinkvision individuato:  $DVIN\n\nDove lo vorresti posizionare?\n(ATTENZIONE, se selezioni VERTICALE il cavo USB va' in alto)" --list --column "VLF" --column "Lato" TRUE "Destra"  FALSE "Destra in VERTICALE" FALSE "Sinistra" FALSE "Sinistra in VERTICALE" FALSE "Sopra" FALSE "Sotto" FALSE "Schermi Uguali"  FALSE "Spegni lt-1421" --radiolist 2>/dev/null`
 	# se annullato esco
 	if [ -z "$SELEZ" ]; then
 		exit
@@ -167,9 +175,17 @@ case "$SELEZ" in
 	r|dx|"Destra")
 	SELEZ="dx"
 	;;
+	# VERTICALE a DX
+	dxr|rr|"VERTICALE a Dx")
+	SELEZ="vert_dx"
+	;;
 	# SINISTRA
 	l|sx|"Sinistra")
 	SELEZ="sx"
+	;;
+	# VERTICALE a SX
+	sxr|lr|"VERTICALE a Sx")
+	SELEZ="vert_sx"
 	;;
 	# SOPRA
 	up|"Sopra")
